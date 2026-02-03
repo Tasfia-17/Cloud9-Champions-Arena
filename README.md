@@ -8,9 +8,9 @@ A competitive multiplayer arena game designed for Cloud9 & JetBrains event booth
 
 ## Demo Video
 
-[![Cloud9 Champions Arena - Game Demo](https://img.shields.io/badge/▶️_Watch_Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](./demo-video.mp4)
+![Cloud9 Champions Arena - Game Demo](./demo.gif)
 
-**[📥 Download Demo Video](./demo-video.mp4)** *(3-minute demonstration showcasing gameplay mechanics, multiplayer features, and event integration capabilities)*
+**[📥 Download Full Video](./demo-video.mp4)** *(3-minute demonstration showcasing gameplay mechanics, multiplayer features, and event integration capabilities)*
 
 ### Video Highlights
 - **0:00-0:30**: Game startup and lobby system
