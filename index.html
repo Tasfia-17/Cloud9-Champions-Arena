@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud9 Champions Arena - Battle Royale</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0a1428 0%, #1e3c72 50%, #2a5298 100%);
+            font-family: 'Orbitron', monospace;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #gameContainer {
+            position: relative;
+            border: 3px solid #00d4ff;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            background: #000;
+        }
+        
+        #gameCanvas {
+            display: block;
+            border-radius: 12px;
+        }
+        
+        #ui {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: #00d4ff;
+            font-size: 16px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+            z-index: 10;
+        }
+        
+        .ui-item {
+            margin-bottom: 8px;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        #leaderboard {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.9);
+            color: #00d4ff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #00d4ff;
+            font-size: 12px;
+            min-width: 220px;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        #championSelect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            color: #00d4ff;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 100;
+            border: 3px solid #00d4ff;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
+        }
+        
+        .champion-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .champion-btn {
+            padding: 20px;
+            background: linear-gradient(145deg, #1e3c72, #2a5298);
+            color: white;
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Orbitron', monospace;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .champion-btn:hover {
+            background: linear-gradient(145deg, #2a5298, #00d4ff);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+        }
+        
+        .champion-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+        
+        .champion-btn:hover::before {
+            opacity: 1;
+            animation: shine 0.5s ease-in-out;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            color: #00d4ff;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 100;
+            display: none;
+            border: 3px solid #00d4ff;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
+        }
+        
+        .restart-btn {
+            padding: 15px 30px;
+            background: linear-gradient(145deg, #1e3c72, #2a5298);
+            color: white;
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Orbitron', monospace;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .restart-btn:hover {
+            background: linear-gradient(145deg, #2a5298, #00d4ff);
+            transform: scale(1.05);
+        }
+        
+        #controls {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            color: rgba(0, 212, 255, 0.8);
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        .ability-cooldown {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .ability-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00d4ff;
+            font-size: 20px;
+            position: relative;
+        }
+        
+        .ability-cooldown-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.7);
+            border-radius: 6px;
+            transform-origin: bottom;
+            transition: transform 0.1s;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 1);
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="1400" height="900"></canvas>
+        
+        <div id="ui">
+            <div class="ui-item">Score: <span id="score">0</span></div>
+            <div class="ui-item">Time: <span id="timer">180</span>s</div>
+            <div class="ui-item">Champion: <span id="currentChampion">None</span></div>
+            <div class="ui-item">Health: <span id="health">100</span>/100</div>
+            <div class="ui-item">Eliminations: <span id="kills">0</span></div>
+        </div>
+        
+        <div id="leaderboard">
+            <h3>🏆 Live Leaderboard</h3>
+            <div id="leaderboardList">
+                <div>1. SkyMaster - 25,420</div>
+                <div>2. C9Legend - 22,850</div>
+                <div>3. StormKing - 19,200</div>
+                <div>4. CloudNinja - 16,800</div>
+                <div>5. ArenaPro - 15,500</div>
+            </div>
+        </div>
+        
+        <div id="championSelect">
+            <h1>⚡ CLOUD9 CHAMPIONS ARENA ⚡</h1>
+            <p>Select your champion and dominate the sky arena!</p>
+            <div class="champion-grid">
+                <button class="champion-btn" onclick="selectChampion('Blaber')">
+                    ⚡<br><strong>BLABER</strong><br>
+                    <small>Lightning Dash<br>Speed Boost</small>
+                </button>
+                <button class="champion-btn" onclick="selectChampion('Jojopyun')">
+                    🔮<br><strong>JOJOPYUN</strong><br>
+                    <small>Arcane Blast<br>Magic Shield</small>
+                </button>
+                <button class="champion-btn" onclick="selectChampion('Berserker')">
+                    🏹<br><strong>BERSERKER</strong><br>
+                    <small>Rapid Fire<br>Long Range</small>
+                </button>
+                <button class="champion-btn" onclick="selectChampion('Zven')">
+                    💚<br><strong>ZVEN</strong><br>
+                    <small>Healing Aura<br>Team Buff</small>
+                </button>
+                <button class="champion-btn" onclick="selectChampion('Fudge')">
+                    🛡️<br><strong>FUDGE</strong><br>
+                    <small>Ground Slam<br>Tank Mode</small>
+                </button>
+            </div>
+        </div>
+        
+        <div id="gameOver">
+            <h2>🎮 ARENA COMPLETE!</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <p>Survival Time: <span id="survivalTime">0</span>s</p>
+            <p>Eliminations: <span id="finalKills">0</span></p>
+            <p id="newRecord" style="display:none; color: gold; font-size: 18px;">🏆 NEW ARENA RECORD!</p>
+            <button class="restart-btn" onclick="restartGame()">ENTER ARENA AGAIN</button>
+        </div>
+        
+        <div id="controls">
+            <strong>Controls:</strong><br>
+            WASD/Arrow Keys - Move<br>
+            Mouse - Aim & Attack<br>
+            Space - Special Ability<br>
+            Shift - Ultimate Ability
+        </div>
+        
+        <div class="ability-cooldown">
+            <div class="ability-icon" id="ability1">
+                ⚡
+                <div class="ability-cooldown-overlay" id="cooldown1"></div>
+            </div>
+            <div class="ability-icon" id="ability2">
+                🔥
+                <div class="ability-cooldown-overlay" id="cooldown2"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="entities.js"></script>
+    <script src="player.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

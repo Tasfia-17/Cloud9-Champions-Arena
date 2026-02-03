@@ -1,0 +1,66 @@
+{
+  "name": "cloud9-champions-arena",
+  "version": "1.0.0",
+  "description": "Competitive multiplayer arena game for Cloud9 x JetBrains hackathon - Category 4: Event Game",
+  "main": "server.py",
+  "scripts": {
+    "start": "python3 server.py",
+    "dev": "python3 server.py --debug",
+    "test": "python3 -m pytest tests/",
+    "build": "./start.sh",
+    "deploy": "python3 server.py --production"
+  },
+  "keywords": [
+    "game", 
+    "multiplayer", 
+    "websocket", 
+    "arena", 
+    "cloud9", 
+    "esports", 
+    "jetbrains", 
+    "hackathon", 
+    "event-game",
+    "junie-ai",
+    "html5",
+    "canvas",
+    "javascript"
+  ],
+  "author": "Tasfia Rahman - Cloud9 x JetBrains Hackathon",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tasfia-17/Cloud9-Champions-Arena.git"
+  },
+  "homepage": "https://github.com/Tasfia-17/Cloud9-Champions-Arena",
+  "bugs": {
+    "url": "https://github.com/Tasfia-17/Cloud9-Champions-Arena/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "python": ">=3.8.0"
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "jetbrains": {
+    "ide": "WebStorm, PyCharm",
+    "junie_features": [
+      "code_generation",
+      "bug_detection", 
+      "performance_optimization",
+      "documentation_generation"
+    ],
+    "development_tools": [
+      "smart_completion",
+      "integrated_debugger",
+      "version_control",
+      "live_templates",
+      "code_inspection"
+    ]
+  },
+  "hackathon": {
+    "event": "Sky's the Limit - Cloud9 x JetBrains Hackathon",
+    "category": "Category 4 - Event Game",
+    "submission_date": "2026-02-03",
+    "demo_video": "./demo-video.mp4"
+  }
+}
