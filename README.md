@@ -12,13 +12,6 @@ A competitive multiplayer arena game designed for Cloud9 & JetBrains event booth
 
 **[📥 Download Full Video](./demo-video.mp4)** *(3-minute demonstration showcasing gameplay mechanics, multiplayer features, and event integration capabilities)*
 
-### Video Highlights
-- **0:00-0:30**: Game startup and lobby system
-- **0:30-1:30**: Multiplayer arena combat demonstration  
-- **1:30-2:30**: Power-up system and special abilities
-- **2:30-3:00**: Event integration features and spectator mode
-
----
 
 ## Project Overview
 
@@ -319,15 +312,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## Contact & Support
 
-**Project Team**: Tasfia Rahman  
-**Repository**: [https://github.com/Tasfia-17/Cloud9-Champions-Arena](https://github.com/Tasfia-17/Cloud9-Champions-Arena)  
-**Demo Video**: [View on GitHub](./demo-video.mp4)  
-**Documentation**: [Game Guide](GAME_GUIDE.md) | [Deployment Guide](DEPLOYMENT.md)
-
-For technical support or event integration inquiries, please open an issue in the GitHub repository.
-
----
-
-*Built with passion for competitive gaming and cutting-edge web technologies. Ready to energize your next esports event.*
